@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fair Trade</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 style="text-align: center;">Fair Trade</h1>
+        <hr>
+        <p style="text-align: center;">Prove the authenticity of car using the Ethereum blockchain.</p>
+    </div>
+
+    <div id="ftc-harvest">
+        <h2>Get car info by VIN</h2>
+        <div class="form-group">
+            VIN
+            <br>
+            <input type="number" id="vin-input" name="vin-input" value=1><br>
+            <div class=button-div>
+                <button class="btn-fetchOne" id="fetch-button" type="button" data-id="6">Fetch Data</button>
+            </div>
+            <div>
+                Car info:
+                <br>
+                <pre id="car-info-block"></pre>
+            </div>
+        </div>
+        <div class=form-break></div>
+        <h2>Manufacturer Assemble</h2>
+        <div class="form-group">
+            Manufacturer ID
+            <br>
+            <input type="text" id="assembleFormOriginID" name="originFarmerID" value="0x99c289eb2aacec289631a5ddf62cf27a63d4494f"
+                size="50"><br>
+            Manufacturer Name
+            <br>
+            <input type="text" id="assembleFormOriginName" name="assembleFormOriginName" value="BMW AG"><br>
+            Manufacturer Information
+            <br>
+            <input type="text" id="assembleFormOriginInformation" name="assembleFormOriginInformation" value="BMW AG is a German multinational company which currently produces automobiles and motorcycles."><br>
+            VIN
+            <br>
+            <input type="number" id="assembleFormVin" name="assembleFormVin" value=1>
+            <br>
+            Product Notes
+            <br>
+            <input type="text" id="assembleFormProductNotes" name="assembleFormProductNotes" value="xDrive 40i" size="60"><br>
+            Product Price
+            <br>
+            <input type="number" id="assembleFormProductPrice" name="assembleFormProductPrice" value=1>ETH<br>
+            <button class="btn-assemble" id="button-assemble" type="button" data-id="1">Assemble</button>
+        </div>
+
+        <div class=form-break></div>
+        <h2>Change other states</h2>
+        <div class="form-group">
+            VIN
+            <br>
+            <input type="number" id="changeStateVin" name="changeStateVin" value=1>
+            <br>
+            <button class="btn-buy" id="btn-buy" type="button" data-id="2">Buy as dealer</button>
+            <button class="btn-ship" id="btn-ship" type="button" data-id="3">Ship to dealer</button>
+            <button class="btn-receive" id="btn-receive" type="button" data-id="4">Receive as dealer</button>
+            <button class="btn-purchase" id="btn-purchase" type="button" data-id="5">Purchase as consumer</button>
+        </div>
+        <hr>
+    </div>
+
+    <h2>Transaction History<span id="ftc-history"></span></h2>
+    <div>
+        <ul id="ftc-events">
+            <!-- Events will appear here from app.js -->
+        </ul>
+        <br>
+        <hr>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- <script src="js/web3.min.js"></script> -->
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
