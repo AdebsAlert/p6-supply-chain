@@ -7,8 +7,8 @@ import "../accesscontrol/ManufacturerRole.sol";
 
 contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
 
-  // Define 'owner'
-  address owner;
+  // Define 'cOwner'
+  address cOwner;
 
   // Define a variable called 'vin' for Universal Product Code (UPC)
   uint  vin;
@@ -59,7 +59,7 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
 
   // Define a modifier that checks to see if msg.sender == owner of the contract
   modifier onlyOwner() {
-    require(msg.sender == owner);
+    require(msg.sender == cOwner);
     _;
   }
 
@@ -136,15 +136,15 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
   // and set 'sku' to 1
   // and set 'vin' to 1
   constructor() public payable {
-    owner = msg.sender;
+    cOwner = msg.sender;
     sku = 1;
     vin = 1;
   }
 
   // Define a function 'kill' if required
   function kill() public {
-    if (msg.sender == owner) {
-      selfdestruct(owner);
+    if (msg.sender == cOwner) {
+      selfdestruct(cOwner);
     }
   }
 
