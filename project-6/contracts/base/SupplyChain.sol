@@ -171,7 +171,6 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
 
     // Emit the appropriate event
     emit Assembled(_vin);
-    
   }
 
   // Define a function 'buyCar' that allows a dealer to mark an car 'SoldForDealer'
@@ -191,7 +190,6 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
   // Define a function 'shipCar' that allows the manufacturer to mark an car 'Shipped'
   // Use the above modifiers to check if the car is sold
   function shipCar(uint _vin) checkCarExists(_vin) soldForDealer(_vin) public onlyManufacturer verifyCaller(cars[_vin].originManufacturerID)
-    
     {
       // Update the appropriate fields
       cars[_vin].carState = State.Shipped;
@@ -209,12 +207,11 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
 
       // Emit the appropriate event
       emit Received(_vin);
-    
   }
 
   // Define a function 'purchaseCar' that allows the consumer to mark an car 'Purchased'
   // Use the above modifiers to check if the car is received
-  function purchaseCar(uint _vin) checkCarExists(_vin) received(_vin) paidEnough(_vin) checkValueForConsumer(_vin) public payable
+  function purchaseCar(uint _vin) checkCarExists(_vin) received(_vin) paidEnough(_vin) checkValueForConsumer(_vin) public payable onlyConsumer
     {
       // Update the appropriate fields
       cars[_vin].carState = State.Purchased;
