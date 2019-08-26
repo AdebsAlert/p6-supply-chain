@@ -19,13 +19,13 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
   // Define a public mapping 'cars' that maps the UPC to an Car.
   mapping (uint => Car) cars;
 
-  // Define a public mapping 'itemsHistory' that maps the UPC to an array of TxHash, 
+  // Define a public mapping 'itemsHistory' that maps the UPC to an array of TxHash,
   // that track its journey through the supply chain -- to be sent from DApp.
   mapping (uint => string[]) itemsHistory;
   
   // Define enum 'State' with the following values:
-  enum State 
-  { 
+  enum State
+  {
     Assembled,      // 0
     SoldForDealer,  // 1
     Shipped,        // 2
@@ -174,7 +174,7 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
   }
 
   // Define a function 'buyCar' that allows a dealer to mark an car 'SoldForDealer'
-  function buyCar(uint _vin) assembled(_vin) checkCarExists(_vin) paidEnough(_vin) checkValueForDealer(_vin) public payable onlyDealer
+  function buyCar(uint _vin) public assembled(_vin) checkCarExists(_vin) paidEnough(_vin) checkValueForDealer(_vin) payable onlyDealer
   {
     // Update the appropriate fields
     cars[_vin].carState = State.SoldForDealer;
@@ -189,7 +189,7 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
 
   // Define a function 'shipCar' that allows the manufacturer to mark an car 'Shipped'
   // Use the above modifiers to check if the car is sold
-  function shipCar(uint _vin) checkCarExists(_vin) soldForDealer(_vin) public onlyManufacturer verifyCaller(cars[_vin].originManufacturerID)
+  function shipCar(uint _vin) public checkCarExists(_vin) soldForDealer(_vin) onlyManufacturer verifyCaller(cars[_vin].originManufacturerID)
     {
       // Update the appropriate fields
       cars[_vin].carState = State.Shipped;
@@ -200,7 +200,7 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
 
   // Define a function 'receiveCar' that allows the dealer to mark an car 'Received'
   // Use the above modifiers to check if the car is shipped
-  function receiveCar(uint _vin) checkCarExists(_vin) shipped(_vin) public onlyDealer
+  function receiveCar(uint _vin) public checkCarExists(_vin) shipped(_vin) onlyDealer
     {
       // Update the appropriate fields
       cars[_vin].carState = State.Received;
@@ -211,7 +211,7 @@ contract SupplyChain is Ownable, ConsumerRole, DealerRole, ManufacturerRole {
 
   // Define a function 'purchaseCar' that allows the consumer to mark an car 'Purchased'
   // Use the above modifiers to check if the car is received
-  function purchaseCar(uint _vin) checkCarExists(_vin) received(_vin) paidEnough(_vin) checkValueForConsumer(_vin) public payable onlyConsumer
+  function purchaseCar(uint _vin) public checkCarExists(_vin) received(_vin) paidEnough(_vin) checkValueForConsumer(_vin) payable onlyConsumer
     {
       // Update the appropriate fields
       cars[_vin].carState = State.Purchased;

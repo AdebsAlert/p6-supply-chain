@@ -78,8 +78,12 @@ contract('SupplyChain', function(accounts) {
 
         const balance = await web3.eth.getBalance(dealerID);
 
+        //add the dealer role
+        await supplyChain.addDealer(dealerID)
+
         // Mark an item as SoldForDealer by calling function buyCar()
         const result = await supplyChain.buyCar(vin,  {from: dealerID, value: balance, gasPrice:0});
+        
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBuffer = await supplyChain.fetchCarBuffer.call(vin);
@@ -98,8 +102,11 @@ contract('SupplyChain', function(accounts) {
     it("Testing smart contract function shipItem() that allows a manufacturer to ship car", async() => {
         const supplyChain = await SupplyChain.deployed();
 
+        //add the manufacturer role
+        await supplyChain.addManufacturer(originManufacturerID)
+
         // Mark an item as SoldForDealer by calling function buyCar()
-        const result = await supplyChain.shipCar(vin);
+        const result = await supplyChain.shipCar(vin, {from: originManufacturerID});
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBuffer = await supplyChain.fetchCarBuffer.call(vin);
@@ -114,11 +121,16 @@ contract('SupplyChain', function(accounts) {
     it("Testing smart contract function receiveItem() that allows a dealer to mark car received", async() => {
         const supplyChain = await SupplyChain.deployed();
 
+        //add the dealer role
+        await supplyChain.addDealer(dealerID)
+
         // Mark an item as SoldForDealer by calling function buyCar()
-        const result = await supplyChain.receiveCar(vin);
+        const result = await supplyChain.receiveCar(vin, {from: dealerID});
+        console.log('here is the result:', result)
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBuffer = await supplyChain.fetchCarBuffer.call(vin);
+        //console.log(resultBuffer)
 
         // Verify the result set
         assert.equal(resultBuffer[8], state.Received, 'Error: Invalid item State');
@@ -131,6 +143,9 @@ contract('SupplyChain', function(accounts) {
         const supplyChain = await SupplyChain.deployed();
 
         const balance = await web3.eth.getBalance(consumerID);
+
+        //add the consumer role
+        await supplyChain.addConsumer(consumerID,{from: ownerID})
 
         // Mark an item as SoldForDealer by calling function buyCar()
         const result = await supplyChain.purchaseCar(vin,  {from: consumerID, value: balance, gasPrice:0});
@@ -155,6 +170,8 @@ contract('SupplyChain', function(accounts) {
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBuffer = await supplyChain.fetchCarBuffer.call(vin);
+
+        //console.log(resultBuffer)
 
         // Verify the result set
         assert.equal(resultBuffer[0], sku, 'Error: Invalid item SKU');
